@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* EVC Light Theme Tokens */
+:root {
+  color-scheme: light;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --muted: rgba(15, 23, 42, 0.65);
+  --soft: rgba(15, 23, 42, 0.78);
+  --subtle: rgba(15, 23, 42, 0.45);
+  --surface: rgba(255, 255, 255, 0.75);
+  --surface-hover: rgba(255, 255, 255, 0.95);
+  --chip: rgba(242, 101, 34, 0.08);
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+  --accent: #ea580c;
+  --accent-muted: #c2410c;
+  --glow: #f97316;
+  --panel: #ffffff;
+  --heading-from: #c2410c;
+  --heading-via: #ea580c;
+  --vignette: rgba(248, 250, 252, 0.7);
+  --panel-shadow: rgba(15, 23, 42, 0.12);
+  --scroll-thumb: rgba(242, 101, 34, 0.28);
+  --scroll-thumb-hover: rgba(242, 101, 34, 0.5);
+}
+
+/* EVC Dark Theme Tokens */
+.dark {
+  color-scheme: dark;
+  --background: #03090a;
+  --foreground: #f8fafc;
+  --muted: rgba(248, 250, 252, 0.58);
+  --soft: rgba(248, 250, 252, 0.72);
+  --subtle: rgba(248, 250, 252, 0.38);
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-hover: rgba(255, 255, 255, 0.07);
+  --chip: rgba(255, 255, 255, 0.06);
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.14);
+  --accent: #f26522;
+  --accent-muted: rgba(242, 101, 34, 0.7);
+  --glow: #ff7a33;
+  --panel: #0a1219;
+  --heading-from: #f26522;
+  --heading-via: #ff8a4c;
+  --vignette: rgba(3, 9, 10, 0.7);
+  --panel-shadow: rgba(0, 0, 0, 0.8);
+  --scroll-thumb: rgba(242, 101, 34, 0.25);
+  --scroll-thumb-hover: rgba(242, 101, 34, 0.45);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-soft: var(--soft);
+  --color-subtle: var(--subtle);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-chip: var(--chip);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-muted: var(--accent-muted);
+  --color-glow: var(--glow);
+  --color-panel: var(--panel);
+  --color-heading-from: var(--heading-from);
+  --color-heading-via: var(--heading-via);
+
+  /* EVC Brand Palette Tokens */
+  --color-brand: #f26522;
+  --color-brand-navy: #0a1628;
+  --color-brand-glow: #ff7a33;
+  --color-brand-blue: #38bdf8;
+  --color-brand-soft: #ff8447;
+  --color-gold: #b8862e;
+
+  --font-sans: var(--font-jakarta);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-jakarta), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(242, 101, 34, 0.28);
+  color: var(--foreground);
+}
+
+/* Custom scrollbar matching EVC brand palette */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 999px;
+  border: 3px solid var(--background);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  opacity: 0;
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(242, 101, 34, 0.5);
+  }
+  50% {
+    opacity: 0.85;
+    box-shadow: 0 0 0 6px rgba(242, 101, 34, 0);
+  }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+/* Orbiting dock sheen animation */
+@property --dock-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes dock-orbit {
+  to {
+    --dock-angle: 360deg;
+  }
+}
+
+.dock-sheen::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--dock-angle),
+    transparent 0 72%,
+    var(--glow) 86%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.55;
+  pointer-events: none;
+  animation: dock-orbit 7s linear infinite;
+}
+
+/* Recede and blur background when card launch overlay is active */
+.is-launching .page-content {
+  transform: scale(0.97);
+  filter: blur(2px);
+  opacity: 0.5;
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.6s ease,
+    opacity 0.6s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-pulse-dot {
+    animation: none;
+    opacity: 1;
+  }
+  .is-launching .page-content {
+    transition: none;
+  }
+  .dock-sheen::before {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
